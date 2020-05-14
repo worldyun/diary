@@ -1,0 +1,15 @@
+.dart_tool/*
+.idea/*
+android/*
+build/*
+test/*
+ios/*
+nodejs/*
+
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+.packages
+diary.iml
+flutter_01.png
+pubspec.lock
