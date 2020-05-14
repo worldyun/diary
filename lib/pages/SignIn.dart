@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:diary/util/EvevBus.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -132,6 +133,7 @@ class _SignInState extends State<SignIn> {
     }else{
       prefs.setBool("signIn", true);
       prefs.setString("username", userInfo["username"]);
+      eventBus.fire(RefreshRiarysEvent(true));
       MyToast.showToast("登录成功");
       new Future.delayed(const Duration(milliseconds: 1000)).then((value){
         Navigator.pop(context);

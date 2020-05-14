@@ -1,3 +1,4 @@
+import 'package:diary/util/EvevBus.dart';
 import 'package:diary/util/HttpUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,7 +44,7 @@ class _MyDrawerState extends State<MyDrawer> {
               Expanded(
                 child: UserAccountsDrawerHeader(
                   accountName: Text(this._username),
-                  accountEmail: Text("其他显示内容/比如天气日记数量等"),
+                  accountEmail: Text("记录好心情"),
                   currentAccountPicture: CircleAvatar(
                     child: Text(
                       this._username[0],
@@ -74,6 +75,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 HttpUtil.post("signout", data: {});
                 this._prefs.setBool("signIn", false);
                 this._prefs.setString("username", "");
+                eventBus.fire(RefreshRiarysEvent(true));
                 setState(() {
                   this._signIn = false;
                   this._username = "UnSignIn";

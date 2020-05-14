@@ -21,7 +21,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: "/",
       onGenerateRoute: onGenerateRoute,
-      debugShowCheckedModeBanner: false
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        platform: TargetPlatform.iOS,
+      )
     );
   }
 }

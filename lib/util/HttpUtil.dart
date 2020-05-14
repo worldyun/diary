@@ -36,7 +36,7 @@ class HttpUtil {
           contentType: Headers.formUrlEncodedContentType,
         ),
       );
-      print("server msg: ${response.data}");
+      // print("server msg: ${response.data}");
       //  MyToast.showToast(response.data);
       if(response.data.length == 0){
         return null;
@@ -57,7 +57,7 @@ class HttpUtil {
     // 获取文档目录的路径
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String dir = appDocDir.path + "/.cookies/";
-    print(dir);
+    // print(dir);
     var cookieJar = PersistCookieJar(dir: dir);
     _dio.interceptors.add(CookieManager(cookieJar));
   }

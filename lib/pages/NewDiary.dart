@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:diary/util/EvevBus.dart';
 import 'package:diary/util/HttpUtil.dart';
 import 'package:diary/util/MyToast.dart';
 import 'package:flutter/material.dart';
@@ -135,18 +136,20 @@ class _NewDiaryState extends State<NewDiary> {
     // String undata = utf8.decode(base64Decode(data));     //解码回utf8
     // print(data);
 
-    Map diary = {
+    Map reqData = {
       "timestamp": (this._nowTime.millisecondsSinceEpoch / 1000).toInt(),
       "data": data
     };
 
-    var resData = await HttpUtil.post("add", data: diary);
+    var resData = await HttpUtil.post("add", data: reqData);
     if (resData["status"] == 1) {
       MyToast.showToast("未登录");
+      this._prefs.setBool("signIn", false);
       Navigator.pushNamed(context, '/signIn');
     }else if(resData["status"] == 401){
       MyToast.showToast("保存成功");
       this._prefs.setBool("diaryDraft", false);
+      eventBus.fire(RefreshRiarysEvent(true));
       Navigator.pop(context);
     }else{
       MyToast.showToast(resData["msg"]);

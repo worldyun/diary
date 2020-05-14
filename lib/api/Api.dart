@@ -4,5 +4,7 @@ final Map<String, String> serverApi = {
   "signup": "/signup",          //注册
   "signin": "/signin",           //登录
   "signout": "/signout",         //登出
-  "add": "/add"                 //增加日记
+  "add": "/add",                 //增加日记
+  "get": "/get",                 //获取日记
+  "refreshSession": "/refreshSession"       //刷新Session
 };
