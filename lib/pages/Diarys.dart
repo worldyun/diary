@@ -84,9 +84,9 @@ class _DiarysState extends State<Diarys> {
     }else if(resData["status"] == 501){
       this._page += 1;
       List<Widget> diarysList = new List();
-      // for (var value in resData["diarys"]) {
-      for (var i = resData["diarys"].length - 1; i >= 0 ; i-- ) {
-        var value = resData["diarys"][i];
+      for (var value in resData["diarys"]) {
+      // for (var i = resData["diarys"].length - 1; i >= 0 ; i-- ) {
+        // var value = resData["diarys"][i];
         var time = DateTime.fromMillisecondsSinceEpoch( (value["timestamp"] * 1000) );
         String data = utf8.decode(base64Decode(value["data"]));
         var card = new InkWell(
