@@ -18,7 +18,7 @@ class NewDiary extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text("布局"),
+        child: Text("内容"),
       ),
     );
   }
