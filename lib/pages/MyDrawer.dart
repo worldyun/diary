@@ -23,11 +23,13 @@ class _MyDrawerState extends State<MyDrawer> {
 
   Future<void> _getInfo() async {
     this._prefs = await SharedPreferences.getInstance();
-    if (this._prefs.getBool("signIn") == true) {
-      setState(() {
+    if (this._prefs.containsKey("signIn")) {
+      if (this._prefs.getBool("signIn")) {
+        setState(() {
         this._signIn = true;
         this._username = this._prefs.getString("username");
       });
+      }
     }
   }
   

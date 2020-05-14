@@ -23,7 +23,7 @@ class _DiarysState extends State<Diarys> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
-          Navigator.pushNamed(context, '/newDiary');
+          Navigator.pushNamed(context, "/newDiary");
         },
       ),
     );

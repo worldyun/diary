@@ -136,9 +136,7 @@ class _SignInState extends State<SignIn> {
       new Future.delayed(const Duration(milliseconds: 1000)).then((value){
         Navigator.pop(context);
       });
-    }
-    
+    } 
   }
-
   
 }
