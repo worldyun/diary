@@ -84,7 +84,7 @@ class _NewDiaryState extends State<NewDiary> {
             ),
             actions: <Widget>[
               IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.clear),
                   onPressed: () {
                     this._prefs.setBool("diaryDraft", false);
                     Navigator.pop(context);
@@ -111,7 +111,7 @@ class _NewDiaryState extends State<NewDiary> {
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none
                       ),
-                      hintText: "记录今日"
+                      hintText: "记录今日",
                     ),
                     onChanged: (value) {
                       this._data = value;

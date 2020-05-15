@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "日记",
       initialRoute: "/",
       onGenerateRoute: onGenerateRoute,
       debugShowCheckedModeBanner: false,
