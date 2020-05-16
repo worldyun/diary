@@ -22,7 +22,6 @@ class _NewDiaryState extends State<NewDiary> {
   String _data = "";
   var _lastData = new TextEditingController();
   SharedPreferences _prefs;
-  bool _diaryDraft = false;
 
   @override
   void initState() {
@@ -38,8 +37,17 @@ class _NewDiaryState extends State<NewDiary> {
         this._nowTime = DateTime.fromMillisecondsSinceEpoch(this._prefs.getInt("diaryDraftTime"));
         this._data = this._prefs.getString("diaryDraftData");
         setState(() {
-          this._lastData.text = this._data;
-          this._diaryDraft = true;
+          this._lastData = new TextEditingController.fromValue(
+            TextEditingValue(
+              text: this._data,
+              selection: TextSelection.fromPosition(
+                TextPosition(
+                  affinity: TextAffinity.downstream,
+                  offset: this._data.length
+                )
+              )
+            )
+          );
         });
       }
     }
@@ -103,10 +111,11 @@ class _NewDiaryState extends State<NewDiary> {
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: TextField(
-                    controller: this._diaryDraft ? this._lastData : TextEditingController(),
+                    controller: this._lastData,
                     keyboardType: TextInputType.multiline,
                     maxLength: 1000,
                     maxLines: 25,
+                    autofocus: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none
@@ -114,6 +123,23 @@ class _NewDiaryState extends State<NewDiary> {
                       hintText: "记录今日",
                     ),
                     onChanged: (value) {
+                      if ( (value.endsWith("\"\"") || value.endsWith("“”") || value.endsWith("《》") || value.endsWith("<>") || value.endsWith("[]") || value.endsWith("()") || value.endsWith("【】") || 
+                          value.endsWith("『』") || value.endsWith("「」") || value.endsWith("{}")) && (value.length - this._data.length == 2)) {
+                        var controller = new TextEditingController.fromValue(
+                          TextEditingValue(
+                            text: value,
+                            selection: TextSelection.fromPosition(
+                              TextPosition(
+                                affinity: TextAffinity.downstream,
+                                offset: value.length - 1
+                              )
+                            )
+                          )
+                        );
+                        setState(() {
+                          this._lastData = controller;
+                        });
+                      }
                       this._data = value;
                       this._pop();
                     },
