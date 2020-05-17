@@ -43,13 +43,29 @@ class _MyDrawerState extends State<MyDrawer> {
             children: <Widget>[
               Expanded(
                 child: UserAccountsDrawerHeader(
-                  accountName: Text(this._username),
-                  accountEmail: Text("记录好心情"),
+                  accountName: Text(
+                    this._username,
+                    style: TextStyle(
+                      color: Color.fromARGB(150, 0, 0, 0),
+                      fontSize: 19,
+                    ),
+                  ),
+                  accountEmail: Text(
+                    "记录好心情",
+                    style: TextStyle(
+                      color: Color.fromARGB(180, 0, 0, 0),
+                    ),
+                  ),
                   currentAccountPicture: CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 150, 150, 175),
                     child: Text(
                       this._username[0],
                       style: TextStyle(
-                        fontSize: 35
+                        fontSize: 36,
+                        color: Colors.white,
+                        shadows: <Shadow>[
+                          Shadow(color: Colors.black38, offset: Offset(2, 2), blurRadius: 3)
+                        ]
                       ),
                     ),
                   ),
@@ -66,9 +82,16 @@ class _MyDrawerState extends State<MyDrawer> {
           InkWell(                                              //登录跳转
             child: ListTile(
               leading: CircleAvatar(
-                child: Icon(Icons.person),
+                backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                child: Icon(Icons.person, color: Colors.black54, size: 30,),
               ),
-              title: Text("${this._signIn ? '登出' : '登录/注册'}"),
+              title: Text(
+                "${this._signIn ? '登出' : '登录/注册'}",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black54
+                ),
+              ),
             ),
             onTap: () {
               if (this._signIn) {
@@ -90,9 +113,16 @@ class _MyDrawerState extends State<MyDrawer> {
           InkWell(                                                //设置跳转
             child: ListTile(
               leading: CircleAvatar(
-                child: Icon(Icons.settings),
+                backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                child: Icon(Icons.settings,color: Colors.black54, size: 30,),
               ),
-              title: Text("设置"),
+              title: Text(
+                "设置",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black54
+                ),
+              ),
             ),
             onTap: () {
               print("设置事件");

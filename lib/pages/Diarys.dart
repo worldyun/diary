@@ -269,7 +269,16 @@ class _DiarysState extends State<Diarys> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("日记"),
+        title: Text(
+          "日记",
+          style: TextStyle(
+            color: Colors.black54
+          ),
+        ),
+        iconTheme: IconThemeData(color: Colors.black54),
+        backgroundColor:  Color.fromARGB(10, 0, 0, 0),
+        brightness: Brightness.light,
+        elevation: 0,
       ),
       body: this._signIn ? Container(
         // padding: EdgeInsets.only(bottom: 15),
@@ -289,6 +298,7 @@ class _DiarysState extends State<Diarys> {
       ) : Center(child: Text("未登录"),),
       drawer: MyDrawer(),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 150, 150, 175),
         child: Icon(Icons.create),
         onPressed: (){
           Navigator.pushNamed(context, "/newDiary");

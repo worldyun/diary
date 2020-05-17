@@ -30,7 +30,16 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("登录"),
+        title: Text(
+          "登录",
+          style: TextStyle(
+            color: Colors.black54
+          ),
+        ),
+        iconTheme: IconThemeData(color: Colors.black54),
+        backgroundColor:  Color.fromARGB(0, 0, 0, 0),
+        brightness: Brightness.light,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -86,7 +95,7 @@ class _SignInState extends State<SignIn> {
                   child: Text(
                     "没有账号？去注册",
                     style: TextStyle(
-                      color: Colors.blue
+                      color: Colors.black54
                     ),
                   ),
                   onTap: () {
@@ -106,7 +115,8 @@ class _SignInState extends State<SignIn> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  color: Colors.blue,
+                  // colorBrightness: Colors.black54,
+                  color: Color.fromARGB(255, 150, 150, 180),
                   textColor: Colors.white,
                   onPressed: this._signFun,
                 ),
