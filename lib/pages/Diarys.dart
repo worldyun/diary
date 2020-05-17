@@ -7,6 +7,7 @@ import 'package:diary/util/HttpUtil.dart';
 import 'package:diary/util/MyToast.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
 import 'MyDrawer.dart';
 
@@ -29,13 +30,14 @@ class _DiarysState extends State<Diarys> {
   bool _noMoreTip = false;
   bool _isRefreshing = false;     //是否正在刷新
   StreamSubscription<RefreshRiarysEvent> _refreshRiarysEvent;     //Event Bus
-  ScrollController _listViewController = new ScrollController();  //控制下拉加载更多
+  ScrollController _listViewController = new ScrollController();  //控制上拉加载更多
+  DateTime _endtTime = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _listViewController.addListener(() {                  //下拉加载
+    _listViewController.addListener(() {                  //上拉加载
       var maxScroll = _listViewController.position.maxScrollExtent -250;
       var pixel = _listViewController.position.pixels;
       if (maxScroll < pixel  && !this._isRefreshing) {
@@ -46,6 +48,9 @@ class _DiarysState extends State<Diarys> {
       }
     });
     _refreshRiarysEvent = eventBus.on<RefreshRiarysEvent>().listen((event) {    //监听刷新Event
+      if (event.refreshRiarys) {
+        this._endtTime = DateTime.now();
+      }
       this._page = 1;
       this._refresh = true;
       this._start();
@@ -84,7 +89,7 @@ class _DiarysState extends State<Diarys> {
   Future<void> _getData() async {           //获取日记
     Map reqData = {                         //组装post数据
       "page": this._page,
-      "endtimestamp": (DateTime.now().millisecondsSinceEpoch / 1000).toInt(),
+      "endtimestamp": (this._endtTime.millisecondsSinceEpoch / 1000).toInt(),
       "starttimestamp": 1
     };
     var resData = await HttpUtil.post("get", data: reqData);    //post请求
@@ -184,7 +189,7 @@ class _DiarysState extends State<Diarys> {
                                 color: Colors.black54,
                               ),
                             )
-                          ),                         
+                          ),
                         ],
                       ),
                     ),
@@ -228,7 +233,7 @@ class _DiarysState extends State<Diarys> {
     }
   }
 
-  void _delDiary(int did) async {
+  void _delDiary(int did) async {       //删除日记
     var index = this._diaryListIndex.indexOf(did);
     if (index == -1) {
       MyToast.showToast("错误");
@@ -265,6 +270,40 @@ class _DiarysState extends State<Diarys> {
     }
   }
 
+  void _showDatePicker() {              //选择查看日期
+    if (!this._signIn) {
+      MyToast.showToast("未登录");
+      Navigator.pushNamed(context, '/signIn');
+      return;
+    }
+    DatePicker.showDatePicker(
+      context,
+      onMonthChangeStartWithFirstDate: true,
+      pickerTheme: DateTimePickerTheme(
+        backgroundColor: Color.fromARGB(255, 230, 230, 230),
+        showTitle: false,
+        itemTextStyle: TextStyle(color: Colors.black54),
+      ),
+      minDateTime: DateTime.parse("2000-01-01"),
+      maxDateTime: DateTime.parse("2030-12-31"),
+      initialDateTime: this._endtTime,
+      dateFormat: 'yyyy-MMMM-dd',
+      locale: DateTimePickerLocale.zh_cn,
+      onClose: (){
+        DateTime nextDay = DateTime.now().add(Duration(days: 1));
+        if(nextDay.isBefore(this._endtTime)){
+          MyToast.showToast("未来是不可预知的!");
+          eventBus.fire(RefreshRiarysEvent(true));
+        }else{
+          eventBus.fire(RefreshRiarysEvent(false));
+        }
+      },
+      onChange: (dateTime, List<int> index) {
+        this._endtTime = dateTime.add(Duration(hours: 23, minutes: 59, seconds: 59, milliseconds: 999));
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -279,6 +318,12 @@ class _DiarysState extends State<Diarys> {
         backgroundColor:  Color.fromARGB(10, 0, 0, 0),
         brightness: Brightness.light,
         elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.calendar_today), 
+            onPressed: _showDatePicker
+          )
+        ],
       ),
       body: this._signIn ? Container(
         // padding: EdgeInsets.only(bottom: 15),
@@ -291,7 +336,8 @@ class _DiarysState extends State<Diarys> {
           onRefresh: () async{
             this._page = 1;
             this._refresh = true;
-            this._start();
+            this._endtTime = DateTime.now();
+            await this._start();
             return true;
           }
         ),
